@@ -1,5 +1,5 @@
 local nvim_lsp = require('lspconfig')
-local servers = {'tsserver','pyright','html'}
+local servers = {'tsserver','pyright','html', 'cssls'}
 local opts = { noremap=true, silent=true }
 local on_attach = function(client, bufnr)
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
@@ -81,6 +81,17 @@ local cmp = require'cmp'
 
 
  local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+ 
+local capabilitie2 = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+require'lspconfig'.html.setup {
+  capabilities2 = capabilities2
+}
+require'lspconfig'.jsonls.setup {
+  capabilities2 = capabilities2
+}
+
 for _, lsp in ipairs(servers) do
    nvim_lsp[lsp].setup {
        on_attach = on_attach,
@@ -91,3 +102,4 @@ end
 nvim_lsp.tsserver.setup{
     filetypes = { "typescript", "typescriptreact", "typescript.tsx" }
 }
+

@@ -1,5 +1,11 @@
-vim.bo.expandtab = true vim.bo.shiftwidth = 4
-vim.bo.softtabstop = 4
+vim.o.expandtab = true 
+vim.o.shiftwidth = 2
+vim.o.softtabstop = 2
+vim.o.tabstop = 2 
+vim.o.expandtab = true
+vim.bo.swapfile = false
+vim.bo.smartindent = true
+vim.bo.autoindent = true
 
 vim.opt.scrolloff = 8
 vim.opt.termguicolors = true
@@ -35,11 +41,20 @@ require('packer').startup(function()
 
     use 'L3MON4D3/LuaSnip'
     use 'saadparwaiz1/cmp_luasnip'
+    use 'styled-components/vim-styled-components'
+    use 'jiangmiao/auto-pairs'
 
+    use {
+      'prettier/vim-prettier',
+      run = 'npm install'
+    }
 end)
 
+vim.g.edge_transparent_background = 1
 vim.cmd[[colorscheme edge]]
-vim.o.background = 'light'
+vim.g.edge_style = 'neon'
+
+--vim.o.background = 'light'
 
 require('lsp')
 
