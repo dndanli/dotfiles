@@ -3,7 +3,7 @@ vim.o.shiftwidth = 2
 vim.o.softtabstop = 2
 vim.o.tabstop = 2 
 vim.o.expandtab = true
-vim.bo.swapfile = false
+vim.o.swapfile = false
 vim.bo.smartindent = true
 vim.bo.autoindent = true
 
@@ -24,12 +24,31 @@ keymap('n', '<c-l>', '<c-w>l', opts)
 
 require('packer').startup(function()
     use 'wbthomason/packer.nvim'
-    use 'shaunsingh/nord.nvim' 
     use 'sainnhe/edge'
-    
     use {
         'nvim-telescope/telescope.nvim',
         requires = { {'nvim-lua/plenary.nvim'} }
+    }
+
+    use 'Shadorain/shadotheme'
+    use { "ellisonleao/gruvbox.nvim" }
+    use 'folke/tokyonight.nvim'
+    use 'arzg/vim-colors-xcode'
+    use { "mangeshrex/everblush.vim" }
+    use "sainnhe/sonokai"
+    use({ "catppuccin/nvim",
+	      as = "catppuccin" })
+
+    use {
+      "folke/trouble.nvim",
+      requires = "kyazdani42/nvim-web-devicons",
+      config = function()
+        require("trouble").setup {
+          -- your configuration comes here
+          -- or leave it empty to use the default settings
+          -- refer to the configuration section below
+        }
+      end
     }
 
     use 'neovim/nvim-lspconfig'
@@ -43,18 +62,68 @@ require('packer').startup(function()
     use 'saadparwaiz1/cmp_luasnip'
     use 'styled-components/vim-styled-components'
     use 'jiangmiao/auto-pairs'
+    use {
+      'nvim-lualine/lualine.nvim',
+      requires = { 'kyazdani42/nvim-web-devicons', opt = true }
+    }
+    use {
+      'kyazdani42/nvim-tree.lua',
+      requires = {
+        'kyazdani42/nvim-web-devicons', -- optional, for file icon
+      },tag = 'nightly' -- optional, updated every week. (see issue #1193)
+    }
 
     use {
       'prettier/vim-prettier',
       run = 'npm install'
     }
+
 end)
 
-vim.g.edge_transparent_background = 1
-vim.cmd[[colorscheme edge]]
-vim.g.edge_style = 'neon'
-
---vim.o.background = 'light'
 
 require('lsp')
+
+vim.t.is_transparent = 0
+function toggle_transparent()
+    if vim.t.is_transparent == 0 then
+        vim.api.nvim_set_hl(0, "Normal", {guibg = NONE; ctermbg = NONE})
+        vim.t.is_transparent = 1
+    else
+        vim.opt.background = "dark"
+        vim.t.is_transparent = 0
+    end
+end
+
+vim.keymap.set("n", "<F2>", toggle_transparent, opts)
+
+vim.g.catppuccin_flavour = "latte" -- latte, frappe, macchiato, mocha
+vim.cmd[[colorscheme catppuccin]]
+
+require('lualine').setup {
+  options = {
+    theme = "catppuccin"
+  }
+}
+
+keymap('n','ff', '<cmd>Telescope find_files<CR>', {})
+keymap("n", "ee", "<cmd>NvimTreeToggle<CR>", opts)
+
+require'nvim-tree'.setup {
+  view = {
+    width = 20,
+    height = 30,
+    hide_root_folder = false,
+    side = "left",
+    preserve_window_proportions = false,
+    number = false,
+    relativenumber = false,
+    signcolumn = "yes",
+    mappings = {
+      custom_only = false,
+      list = {
+        -- user mappings go here
+      },
+    },
+  },
+}
 
