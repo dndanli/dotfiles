@@ -23,41 +23,28 @@ keymap('n', '<c-k>', '<c-w>k', opts)
 keymap('n', '<c-l>', '<c-w>l', opts)
 
 require('packer').startup(function()
-    use 'wbthomason/packer.nvim'
+    --colors
+    use { "ellisonleao/gruvbox.nvim" }
     use 'sainnhe/edge'
+
+    use 'wbthomason/packer.nvim'
     use {
         'nvim-telescope/telescope.nvim',
         requires = { {'nvim-lua/plenary.nvim'} }
     }
-
-    use 'Shadorain/shadotheme'
-    use { "ellisonleao/gruvbox.nvim" }
-    use 'folke/tokyonight.nvim'
-    use 'arzg/vim-colors-xcode'
-    use { "mangeshrex/everblush.vim" }
-    use "sainnhe/sonokai"
-    use({ "catppuccin/nvim",
-	      as = "catppuccin" })
-
     use {
       "folke/trouble.nvim",
       requires = "kyazdani42/nvim-web-devicons",
       config = function()
-        require("trouble").setup {
-          -- your configuration comes here
-          -- or leave it empty to use the default settings
-          -- refer to the configuration section below
-        }
+        require("trouble").setup {}
       end
     }
-
     use 'neovim/nvim-lspconfig'
     use 'hrsh7th/cmp-nvim-lsp'
     use 'hrsh7th/cmp-buffer'
     use 'hrsh7th/cmp-path'
     use 'hrsh7th/cmp-cmdline'
     use 'hrsh7th/nvim-cmp'
-
     use 'L3MON4D3/LuaSnip'
     use 'saadparwaiz1/cmp_luasnip'
     use 'styled-components/vim-styled-components'
@@ -96,14 +83,12 @@ end
 
 vim.keymap.set("n", "<F2>", toggle_transparent, opts)
 
-vim.g.catppuccin_flavour = "latte" -- latte, frappe, macchiato, mocha
-vim.cmd[[colorscheme catppuccin]]
+vim.o.background = 'dark'
+vim.g.edge_style = 'aura'
+vim.cmd[[colorscheme gruvbox]]
 
-require('lualine').setup {
-  options = {
-    theme = "catppuccin"
-  }
-}
+
+require('lualine').setup {}
 
 keymap('n','ff', '<cmd>Telescope find_files<CR>', {})
 keymap("n", "ee", "<cmd>NvimTreeToggle<CR>", opts)

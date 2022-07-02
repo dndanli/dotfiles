@@ -1,4 +1,5 @@
 local nvim_lsp = require('lspconfig')
+
 local servers = {'tsserver','pyright','html', 'cssls'}
 local opts = { noremap=true, silent=true }
 local on_attach = function(client, bufnr)
@@ -19,6 +20,7 @@ local on_attach = function(client, bufnr)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>ca', '<cmd>lua vim.lsp.buf.code_action()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', 'gr', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', '<space>f', '<cmd>lua vim.lsp.buf.formatting()<CR>', opts)
+
 
 end
 
@@ -92,6 +94,8 @@ require'lspconfig'.jsonls.setup {
   capabilities2 = capabilities2
 }
 
+require'lspconfig'.rust_analyzer.setup{}
+
 for _, lsp in ipairs(servers) do
    nvim_lsp[lsp].setup {
        on_attach = on_attach,
@@ -100,6 +104,6 @@ for _, lsp in ipairs(servers) do
 end
 
 nvim_lsp.tsserver.setup{
-    filetypes = { "typescript", "typescriptreact", "typescript.tsx" }
+    filetypes = { "typescript", "typescriptreact", "typescript.tsx", "rust"}
 }
 
