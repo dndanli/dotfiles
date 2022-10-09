@@ -1,6 +1,7 @@
 local nvim_lsp = require('lspconfig')
+local util = require("lspconfig/util")
 
-local servers = {'tsserver','pyright','html', 'cssls'}
+local servers = {'tsserver','pyright','html', 'cssls', 'gopls'}
 local opts = { noremap=true, silent=true }
 local on_attach = function(client, bufnr)
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
@@ -24,14 +25,8 @@ local on_attach = function(client, bufnr)
 
 end
 
-
-
-
-
 local cmp = require'cmp'
-
-
-  cmp.setup({
+cmp.setup({
           snippet = {
       -- REQUIRED - you must specify a snippet engine
       expand = function(args)
@@ -82,19 +77,21 @@ local cmp = require'cmp'
   })
 
 
- local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
- 
-local capabilitie2 = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
+local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 require'lspconfig'.html.setup {
-  capabilities2 = capabilities2
-}
-require'lspconfig'.jsonls.setup {
-  capabilities2 = capabilities2
+  capabilities = capabilities
 }
 
-require'lspconfig'.rust_analyzer.setup{}
+require'lspconfig'.jsonls.setup {
+  capabilities = capabilities
+}
+
+require'lspconfig'.gopls.setup{
+    capabilities = capabilities,
+    filetypes = {"go", "gomod"},
+    root_dir = util.root_pattern("go.work", "go.mod", ".git"),
+}
 
 for _, lsp in ipairs(servers) do
    nvim_lsp[lsp].setup {
@@ -104,6 +101,6 @@ for _, lsp in ipairs(servers) do
 end
 
 nvim_lsp.tsserver.setup{
-    filetypes = { "typescript", "typescriptreact", "typescript.tsx", "rust"}
+    filetypes = { "typescript", "typescriptreact", "typescript.tsx"}
 }
 
