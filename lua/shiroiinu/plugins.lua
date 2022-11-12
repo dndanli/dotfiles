@@ -1,6 +1,8 @@
 require('packer').startup(function()
     --colors
     use 'sainnhe/edge'
+    use 'ellisonleao/gruvbox.nvim'
+    use 'sainnhe/sonokai'
 
     --utils
     use 'wbthomason/packer.nvim'
@@ -22,9 +24,14 @@ require('packer').startup(function()
     use 'hrsh7th/cmp-cmdline'
     use 'hrsh7th/nvim-cmp'
     use 'L3MON4D3/LuaSnip'
+    use {
+        'nvim-treesitter/nvim-treesitter',
+        run = ':TSUpdate'
+    }
+    use 'windwp/nvim-autopairs'
+    use 'windwp/nvim-ts-autotag'
     use 'saadparwaiz1/cmp_luasnip'
     use 'styled-components/vim-styled-components'
-    use 'jiangmiao/auto-pairs'
     use {
       'nvim-lualine/lualine.nvim',
       requires = { 'kyazdani42/nvim-web-devicons', opt = true }
@@ -35,7 +42,6 @@ require('packer').startup(function()
         'kyazdani42/nvim-web-devicons', -- optional, for file icon
       },tag = 'nightly' -- optional, updated every week. (see issue #1193)
     }
-
     use {
       'prettier/vim-prettier',
       run = 'npm install'
@@ -44,7 +50,6 @@ require('packer').startup(function()
       "williamboman/mason.nvim",
       "williamboman/mason-lspconfig.nvim",
     }
-
 end)
 
 
@@ -69,3 +74,25 @@ require'nvim-tree'.setup {
     },
   },
 }
+require('nvim-autopairs').setup({
+  disable_filetype = { "TelescopePrompt" , "vim" },
+})
+
+require('nvim-ts-autotag').setup()
+
+require('nvim-treesitter.configs').setup {
+  ensure_installed = "all",
+  highlight = { enable = true },
+  indent = { enable = true }
+}
+-- vim.opt.foldmethod     = 'expr'
+-- vim.opt.foldexpr       = 'nvim_treesitter#foldexpr()'
+---WORKAROUND
+vim.api.nvim_create_autocmd({'BufEnter','BufAdd','BufNew','BufNewFile','BufWinEnter'}, {
+  group = vim.api.nvim_create_augroup('TS_FOLD_WORKAROUND', {}),
+  callback = function()
+    --vim.opt.foldmethod     = 'expr'
+    --vim.opt.foldexpr       = 'nvim_treesitter#foldexpr()'
+  end
+})
+---ENDWORKAROUND

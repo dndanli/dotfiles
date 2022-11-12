@@ -1,7 +1,7 @@
 local nvim_lsp = require('lspconfig')
 local util = require("lspconfig/util")
 
-local servers = {'tsserver','pyright','html', 'cssls', 'gopls'}
+local servers = {'tsserver','pyright','html', 'cssls', 'gopls','tailwindcss'}
 local opts = { noremap=true, silent=true }
 local on_attach = function(client, bufnr)
     vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
@@ -77,13 +77,19 @@ cmp.setup({
   })
 
 
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+--local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
 
 require'lspconfig'.html.setup {
   capabilities = capabilities
 }
 
 require'lspconfig'.jsonls.setup {
+  capabilities = capabilities
+}
+
+require'lspconfig'.tailwindcss.setup {
   capabilities = capabilities
 }
 
